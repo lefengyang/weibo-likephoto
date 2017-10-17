@@ -1,6 +1,6 @@
 # weibo-likephoto
 
-> A Vue.js project
+> 搜索微博名，然后就可以查看该微博用户点赞过的所有图片，包括已被微博和谐掉的图片，所以你懂的……
 
 ## Build Setup
 
@@ -18,4 +18,3 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
