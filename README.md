@@ -1,6 +1,7 @@
 # weibo-likephoto
 
 > 搜索微博名，然后就可以查看该微博用户点赞过的所有图片，包括已被微博和谐掉的图片，所以你懂的……
+> 技术栈：vue + vue-router + vue-lazyload + axios + sass + indexedDB + leanCloud(一个serverless服务) + 
 
 ## Build Setup
 
