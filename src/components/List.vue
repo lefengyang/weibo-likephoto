@@ -24,7 +24,8 @@ export default {
             is_loading: false,
             is_view: false,
             big_img: '../static/loading.gif',
-            index: 0
+            index: 0,
+            mid: ''
         }
     },
     created() {
@@ -86,10 +87,15 @@ export default {
         },
         _big(item, index) {
             var url = item.pic_ori;
-            this.mid = item.mblog.mid;
             this.big_img = url;
             this.is_view = true;
             this.index = index;
+
+            try{
+                this.mid = item.mblog.mid;
+            }catch(e){
+                this.mid = '';
+            }
 
             api.addPhoto(url);
         },
@@ -104,7 +110,11 @@ export default {
             this._big(this.picList[this.index], this.index);
         },
         _like_user() {
-            this.$router.replace({path:'/like_user', query:{mid:this.mid}})
+            if(this.mid){
+                this.$router.replace({path:'/like_user', query:{mid:this.mid}});
+            }else{
+                //...
+            }
         }
     }
 }

@@ -3,9 +3,13 @@
     <h1>微博秋名山</h1>
     <input class="search-name" type="text" v-model="keywords" placeholder="搜索微博用户">
     <div @click="_search()" class="btn">搜索</div>
-    <router-link to="/history">历史相册</router-link>
 
     <h3>工具说明：用于查看微博用户的点赞图片</h3>
+
+    <div class="other">
+        <router-link to="/history">历史相册</router-link>
+        <router-link to="/history_user">历史用户</router-link>
+    </div>
 
     <h2>最新搜索</h2>
     <ul class="clr">
@@ -100,6 +104,10 @@ h2 {
 
 h3 {
     font-size:0.6rem;
+    padding: 0.5rem 1rem;
+}
+
+.other {
     padding: 0.5rem 1rem;
     border-bottom: 1px solid #efefef;
 }

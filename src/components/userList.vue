@@ -1,7 +1,7 @@
 <template>
     <div class="hello">
         <h2>搜索结果</h2>
-        <div class="user" v-for="(item, index) in userLists" @click="_go(item.user.id)">
+        <div class="user" v-for="(item, index) in userLists" @click="_go(item.user.id, item.user.screen_name)">
             <img class="avatar" :src="item.user.avatar_large">
             <div class="desc">
                 <div class="name">{{item.user.screen_name}}</div>
@@ -13,10 +13,13 @@
 </template>
 
 <script>
+import api from '../api'
+
 export default {
     props: ['userLists'],
     methods: {
-        _go(uid) {
+        _go(uid, name) {
+            api.addUser(uid, name);
             this.$router.replace({path:'/list', query:{uid:uid}})
         }
     }
