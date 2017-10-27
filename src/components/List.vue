@@ -1,6 +1,6 @@
 <template>
     <div class="hello">
-        <div class="back"><router-link to="/">返回</router-link></div>
+        <div class="back"><a @click="routerBack">返回</a></div>
         <div class="photo-list">
             <img class="small" v-lazy="item.pic_small" v-for="(item, index) in picList" @click="_big(item, index)">
             <div class="loading" v-show="is_loading">加载中...</div>
@@ -29,6 +29,7 @@ export default {
         }
     },
     created() {
+        window.$router = this.$router;
         this.loadPage();
     },
     mounted(){
@@ -57,6 +58,9 @@ export default {
         },false);
     },
     methods: {
+        routerBack(){
+            this.$router.back();
+        },
         _hide (){
             this.is_view = false;
         },
@@ -111,7 +115,7 @@ export default {
         },
         _like_user() {
             if(this.mid){
-                this.$router.replace({path:'/like_user', query:{mid:this.mid}});
+                this.$router.push({path:'/like_user', query:{mid:this.mid}});
             }else{
                 //...
             }

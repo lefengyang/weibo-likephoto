@@ -1,6 +1,6 @@
 <template>
     <div class="hello">
-        <div class="back"><router-link to="/">返回</router-link></div>
+        <div class="back"><a @click="routerBack">返回</a></div>
         <div class="user" v-for="(item, index) in userLists">
             <div class="name" @click="_go(item.uid)">{{item.name}}</div>
             <div class="close" @click="_del(item.uid)">删除</div>
@@ -24,8 +24,11 @@ export default {
         });
     },
     methods: {
+        routerBack(){
+            this.$router.back();
+        },
         _go(uid) {
-            this.$router.replace({path:'/list', query:{uid:uid}})
+            this.$router.push({path:'/list', query:{uid:uid}})
         },
         _del(uid) {
             api.delUser(uid);

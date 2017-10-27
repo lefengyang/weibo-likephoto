@@ -20,7 +20,7 @@ export default {
     methods: {
         _go(uid, name) {
             api.addUser(uid, name);
-            this.$router.replace({path:'/list', query:{uid:uid}})
+            this.$router.push({path:'/list', query:{uid:uid}})
         }
     }
 }

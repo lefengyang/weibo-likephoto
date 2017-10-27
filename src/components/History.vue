@@ -1,6 +1,6 @@
 <template>
     <div class="hello">
-        <div class="back"><router-link to="/">返回</router-link></div>
+        <div class="back"><a @click="routerBack">返回</a></div>
         <div class="photo-list">
             <img class="small" v-lazy="item.pic_small" v-for="(item, index) in picList" @click="_big(item.pic_ori, index)">
             <div class="big-photo" v-show="is_view" @click="_hide()">
@@ -53,6 +53,9 @@ export default {
         },false);
     },
     methods: {
+        routerBack(){
+            this.$router.back();
+        },
         _hide (){
             this.is_view = false;
         },

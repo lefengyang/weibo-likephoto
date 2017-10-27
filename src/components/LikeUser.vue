@@ -1,6 +1,6 @@
 <template>
     <div class="search-list">
-        <div class="back"><router-link to="/">返回</router-link></div>
+        <div class="back"><a @click="routerBack">返回</a></div>
         <v-user-list :user-lists="searchLists"></v-user-list>
         <div class="loading" v-show="is_loading">加载中...</div>
     </div>
@@ -35,6 +35,9 @@ export default {
         },false);
     },
     methods: {
+        routerBack(){
+            this.$router.back();
+        },
         getScrollTop() {
             var scrollTop=0;
             if(document.documentElement&&document.documentElement.scrollTop){
