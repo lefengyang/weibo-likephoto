@@ -29,8 +29,19 @@ export default {
         }
     },
     created() {
-        window.$router = this.$router;
         this.loadPage();
+    },
+    beforeRouteEnter(to, from, next){
+        if(from.path=='/like_user'){
+            next();
+        }else{
+            next(vm=>{
+                vm.index = 0;
+                vm.page = 1;
+                vm.picList = [];
+                vm.loadPage();
+            });
+        }
     },
     mounted(){
         window.addEventListener('scroll',()=>{
