@@ -31,18 +31,6 @@ export default {
     created() {
         this.loadPage();
     },
-    beforeRouteEnter(to, from, next){
-        if(from.path=='/like_user'){
-            next();
-        }else{
-            next(vm=>{
-                vm.index = 0;
-                vm.page = 1;
-                vm.picList = [];
-                vm.loadPage();
-            });
-        }
-    },
     mounted(){
         window.addEventListener('scroll',()=>{
             if(this.getScrollTop() + window.innerHeight > document.body.offsetHeight - 100) {
