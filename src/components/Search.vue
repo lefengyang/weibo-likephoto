@@ -25,6 +25,7 @@
 <script>
 import userList from '@/components/userList'
 import api from '../api'
+import jsonp from '../api/jsonp'
 
 export default {
     components: {
@@ -49,6 +50,25 @@ export default {
             }
             this.keywordList = keyword_list;
         });
+
+/*
+        //jsonp的例子
+        jsonp({
+            url:'//narya.huainanhai.com/intro/list',
+            data:{onlyjson:0},
+            success:function(data){
+                console.log('jsonp1', data);
+            }
+        });
+
+        jsonp({
+            url:'//narya.huainanhai.com/elite/list',
+            data:{onlyjson:0},
+            success:function(data){
+                console.log('jsonp2', data);
+            }
+        });
+*/
     },
     methods: {
         updateKeyword(keyword) {
