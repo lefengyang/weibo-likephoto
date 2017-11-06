@@ -9,6 +9,7 @@
     <div class="other">
         <router-link to="/history">历史相册</router-link>
         <router-link to="/history_user">历史用户</router-link>
+        <router-link to="/login">重新登录</router-link>
     </div>
 
     <h2>最新搜索</h2>

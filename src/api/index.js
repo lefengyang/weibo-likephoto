@@ -1,5 +1,6 @@
 import axios from 'axios'
 import db from './indexeddb'
+import cookie from './cookie'
 import db_u from './indexeddb_user'
 
 
@@ -19,9 +20,24 @@ export function fetchGet(url) {
     })
 }
 
-var gsid = '_2A253BGGlDeThGedG7FUR8yrIzjmIHXVUBw_trDV6PUJbkdBeLU7NkW0LVX-rghEX5CuoQ-97N71O4LOKww..';
+var gsid = '';
 
 export default {
+	SetGsid(_gsid) {
+		cookie.set('gsid', _gsid);
+		gsid = _gsid;
+	},
+
+	GetGsid(_gsid) {
+		if(gsid)return gsid;
+		return cookie.get('gsid');
+	},
+
+	Login(username, password) {
+		var url = 'http://www.piggogo.com/weibo_login.php';
+		return fetchGet(url+'?username='+encodeURIComponent(username)+'&password='+encodeURIComponent(password));
+	},
+
     //搜索用户
     Search(name) {
         var fid = encodeURIComponent('100303type=3&q='+name+'&t=3');

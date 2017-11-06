@@ -5,8 +5,16 @@
 </template>
 
 <script>
+import api from './api'
+
 export default {
-    name: 'app'
+    name: 'app',
+    created() {
+        if(api.GetGsid()==''){
+            this.$router.push({path:'/login', query:{}});
+            return;
+        }
+    }
 }
 </script>
 
