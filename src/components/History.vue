@@ -1,6 +1,6 @@
 <template>
     <div class="hello">
-        <div class="back"><a @click="routerBack">返回</a></div>
+        <div class="back"><a @click="routerBack">返回</a> <div class="blog-name">页码<input type="text" v-model="page" class="go-page-input"></div></div>
         <div class="photo-list">
             <img class="small" v-lazy="item.pic_small" v-for="(item, index) in picList" @click="_big(item.pic_ori, index, item.mid)">
             <div class="big-photo" v-show="is_view">
@@ -119,6 +119,8 @@ export default {
 .left-area{position:absolute;left:0;top:0;bottom:0;right:75%;}
 .center-area{position:absolute;left:25%;top:0;bottom:0;right:25%;}
 .right-area{position:absolute;left:75%;top:0;bottom:0;right:0;}
+
+.go-page-input{width:50px;border:1px solid #333;text-align:center;}
 
 .like-user{
     position: absolute;
