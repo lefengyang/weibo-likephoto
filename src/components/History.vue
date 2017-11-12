@@ -5,9 +5,9 @@
             <img class="small" v-lazy="item.pic_small" v-for="(item, index) in picList" @click="_big(item.pic_ori, index, item.mid)">
             <div class="big-photo" v-show="is_view">
                 <img :src="big_img">
-                <div class="left-area" @click="prev()"></div>
+                <div class="left-area" @click="_left()"></div>
                 <div class="center-area" @click="_hide()"></div>
-                <div class="right-area" @click="next()"></div>
+                <div class="right-area" @click="_right()"></div>
                 <div class="like-user" @click="_like_user()" v-show="mid">此图点赞用户</div>
             </div>
         </div>
@@ -79,6 +79,20 @@ export default {
             this.is_view = true;
             this.index = index;
             this.mid = mid?mid:'';
+        },
+        _left() {
+            if(this.$store.state.hand=='right'){
+                this.prev();
+            }else{
+                this.next();
+            }
+        },
+        _right() {
+            if(this.$store.state.hand=='right'){
+                this.next();
+            }else{
+                this.prev();
+            }
         },
         prev() {
             if(this.index<=0)return;

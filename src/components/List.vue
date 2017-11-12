@@ -6,9 +6,9 @@
             <div class="loading" v-show="is_loading">加载中...</div>
             <div class="big-photo" v-show="is_view">
                 <img :src="big_img">
-                <div class="left-area" @click="prev()"></div>
+                <div class="left-area" @click="_left()"></div>
                 <div class="center-area" @click="_hide()"></div>
-                <div class="right-area" @click="next()"></div>
+                <div class="right-area" @click="_right()"></div>
                 <div class="like-user" @click="_like_user()" v-show="mid">此图点赞用户</div>
             </div>
         </div>
@@ -91,6 +91,20 @@ export default {
             }
 
             api.addPhoto(url, this.mid);
+        },
+        _left() {
+            if(this.$store.state.hand=='right'){
+                this.prev();
+            }else{
+                this.next();
+            }
+        },
+        _right() {
+            if(this.$store.state.hand=='right'){
+                this.next();
+            }else{
+                this.prev();
+            }
         },
         prev() {
             if(this.index<=0)return;

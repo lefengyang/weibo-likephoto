@@ -9,6 +9,10 @@
     <div class="other">
         <router-link to="/history">历史相册</router-link>
         <router-link to="/history_user">历史用户</router-link>
+        <select v-model="hand">
+            <option value="left">左手</option>
+            <option value="right">右手</option>
+        </select>
     </div>
 
     <h2>最新搜索</h2>
@@ -36,7 +40,17 @@ export default {
             show: false,
             keywords: '',
             searchLists: [],
-	    keywordList: []
+	        keywordList: []
+        }
+    },
+    computed:{
+        hand:{
+            get () {
+                return this.$store.state.hand;
+            },
+            set (hand) {
+                this.$store.commit('updateHand', hand);
+            }
         }
     },
     created() {
