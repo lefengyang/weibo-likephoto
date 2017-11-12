@@ -114,9 +114,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.left-area{position:absolute;left:0;top:0;bottom:0;right:70%;}
-.center-area{position:absolute;left:30%;top:0;bottom:0;right:30%;}
-.right-area{position:absolute;left:70%;top:0;bottom:0;right:0;}
+.left-area{position:absolute;left:0;top:0;bottom:0;right:75%;}
+.center-area{position:absolute;left:25%;top:0;bottom:0;right:25%;}
+.right-area{position:absolute;left:75%;top:0;bottom:0;right:0;}
 
 .like-user{
     position: absolute;
