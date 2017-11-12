@@ -2,9 +2,13 @@
     <div class="hello">
         <div class="back"><a @click="routerBack">返回</a></div>
         <div class="photo-list">
-            <img class="small" v-lazy="item.pic_small" v-for="(item, index) in picList" @click="_big(item.pic_ori, index)">
-            <div class="big-photo" v-show="is_view" @click="_hide()">
+            <img class="small" v-lazy="item.pic_small" v-for="(item, index) in picList" @click="_big(item.pic_ori, index, item.mid)">
+            <div class="big-photo" v-show="is_view">
                 <img :src="big_img">
+                <div class="left-area" @click="prev()"></div>
+                <div class="center-area" @click="_hide()"></div>
+                <div class="right-area" @click="next()"></div>
+                <div class="like-user" @click="_like_user()" v-show="mid">此图点赞用户</div>
             </div>
         </div>
     </div>
@@ -21,7 +25,8 @@ export default {
             picList: [],
             is_view: false,
             big_img: '',
-            index: 0
+            index: 0,
+            mid: ''
         }
     },
     created() {
@@ -33,22 +38,6 @@ export default {
                 if(this.is_end)return;
                 this.page++;
                 this.loadPage();
-            }
-        },false);
-
-        var start_x = 0;
-
-        window.addEventListener('touchstart',(e)=>{
-            start_x = e.touches[0].clientX;
-        },false);
-
-        window.addEventListener('touchend',(e)=>{
-            var clientX = e.changedTouches[0].clientX;
-            if(clientX - start_x > 50){//查看上一张
-                this.prev();
-            }
-            else if(start_x - clientX > 50){//查看下一张
-                this.next();
             }
         },false);
     },
@@ -70,40 +59,64 @@ export default {
             return scrollTop;
         },
         loadPage(){
+            if(this.picList.length>300){
+                this.index = 0;
+                this.picList = this.picList.slice(290);
+                window.scroll(0,0);
+            }
             api.getPhotoList(this.page).then(res => {
-                if(this.picList.length>300){
-                    this.index = 0;
-                    this.picList = [];
-                    window.scroll(0,0);
-                }
-
                 var pics = [];
                 for(var i in res){
-                    pics.push({pic_ori:res[i], pic_small:res[i].replace(/(https?:\/\/.*?\/).*?(\/.*)/,'$1thumb150$2')});
+                    var url = res[i]['url'];
+                    var mid = res[i]['mid']?res[i]['mid']:'';
+                    pics.push({pic_ori:url, pic_small:url.replace(/(https?:\/\/.*?\/).*?(\/.*)/,'$1thumb150$2'), mid:mid});
                 }
                 this.picList = this.picList.concat(pics);
             })
         },
-        _big(url, index) {
+        _big(url, index, mid) {
             this.big_img = url;
             this.is_view = true;
             this.index = index;
+            this.mid = mid?mid:'';
         },
         prev() {
             if(this.index<=0)return;
             this.index--;
-            this._big(this.picList[this.index]['pic_ori'], this.index);
+            this._big(this.picList[this.index]['pic_ori'], this.index, this.picList[this.index]['mid']);
         },
         next() {
             if(this.index>=this.picList.length-1)return;
             this.index++;
-            this._big(this.picList[this.index]['pic_ori'], this.index);
+            this._big(this.picList[this.index]['pic_ori'], this.index, this.picList[this.index]['mid']);
+        },
+        _like_user() {
+            if(this.mid){
+                this.$router.push({path:'/like_user', query:{mid:this.mid}});
+            }else{
+                //...
+            }
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.left-area{position:absolute;left:0;top:0;bottom:0;right:70%;}
+.center-area{position:absolute;left:30%;top:0;bottom:0;right:30%;}
+.right-area{position:absolute;left:70%;top:0;bottom:0;right:0;}
+
+.like-user{
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #fff;
+    background: #000;
+}
+
 .back{
     padding:0.5rem;
 }

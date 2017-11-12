@@ -10,7 +10,7 @@ var iDBKeyRange = window.IDBKeyRange ||
 
 var db = {
 
-    version: 1,
+    version: 3,
     objectStoreName: 'weibo_user_h',
     instance: {},
 
@@ -20,7 +20,7 @@ var db = {
             name = db.objectStoreName;
 
         if (!names.contains(name)) {
-            _db.createObjectStore(name,{keyPath: 'uid', autoIncrement: false});
+            _db.createObjectStore(name,{keyPath: 'uid'});
         }
     },
 
@@ -61,9 +61,12 @@ var db = {
 
             store = db.getObjectStore(mode),
 
+/*
             request = data.id ?
                 store.put(data) :
                 store.add(data);
+*/
+            request = store.put(data);
 
             request.onsuccess = callback;
         });

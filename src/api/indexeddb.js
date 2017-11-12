@@ -10,8 +10,8 @@ var iDBKeyRange = window.IDBKeyRange ||
 
 var db = {
 
-    version: 2,
-    objectStoreName: 'weibo_like_photo',
+    version: 5,
+    objectStoreName: 'weibo_like_photo_c',
     instance: {},
 
     upgrade: function (e) {
@@ -20,7 +20,8 @@ var db = {
             name = db.objectStoreName;
 
         if (!names.contains(name)) {
-            _db.createObjectStore(name,{autoIncrement: true});
+            var store=_db.createObjectStore(name,{autoIncrement: true});
+            store.createIndex('urlIndex','url',{unique:true});
         }
     },
 
@@ -61,9 +62,12 @@ var db = {
 
             store = db.getObjectStore(mode),
 
+/*
             request = data.id ?
                 store.put(data) :
                 store.add(data);
+*/
+            request = store.put(data);
 
             request.onsuccess = callback;
         });

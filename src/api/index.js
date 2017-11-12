@@ -1,8 +1,23 @@
 import axios from 'axios'
 import db from './indexeddb'
-import cookie from './cookie'
 import db_u from './indexeddb_user'
 
+
+Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "H+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S+": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
 
 axios.defaults.timeout = 10000;
 
@@ -20,24 +35,9 @@ export function fetchGet(url) {
     })
 }
 
-var gsid = '';
+var gsid = '_2A253ArP0DeTxGedG7FUR8yrIzjmIHXVVkN_hrDV6PUJbkdANLUbCkWp-f5wpaeSszG3ckfmEanQfD1Lfmw..';
 
 export default {
-	SetGsid(_gsid) {
-		cookie.set('gsid', _gsid);
-		gsid = _gsid;
-	},
-
-	GetGsid(_gsid) {
-		if(gsid)return gsid;
-		return cookie.get('gsid');
-	},
-
-	Login(username, password) {
-		var url = 'http://www.piggogo.com/weibo_login.php';
-		return fetchGet(url+'?username='+encodeURIComponent(username)+'&password='+encodeURIComponent(password));
-	},
-
     //搜索用户
     Search(name) {
         var fid = encodeURIComponent('100303type=3&q='+name+'&t=3');
@@ -59,7 +59,8 @@ export default {
 
     //查看用户，则加到本地数据库
     addUser(uid, name){
-        db_u.save({uid:uid,name:name});
+        var d_str = new Date().Format('yyyy-MM-dd HH:mm:ss');
+        db_u.save({uid:uid,name:name,last:d_str});
     },
 
     //删除用户
@@ -71,14 +72,19 @@ export default {
     getUser(){
         return new Promise((resolve, reject) => {
             db_u.getAll(data => {
+                data.sort(function(a, b){
+                    if(!a.last)return 1;
+                    if(!b.last)return -1;
+                    return b.last.replace(/[- :]/g,'') - a.last.replace(/[- :]/g,'');
+                });
                 resolve(data);
             });
         });
     },
 
     //查看大图，则加到本地数据库
-    addPhoto(url){
-        db.save({url:url});
+    addPhoto(url, mid){
+        db.save({url:url,mid:mid?mid:''});
     },
 
     //读取本地数据库
@@ -87,7 +93,7 @@ export default {
             db.getPage(page, data => {
                 var arr = [];
                 for(var i in data){
-                    arr.push(data[i]['url']);
+                    arr.push({url:data[i]['url'],mid:data[i]['mid']});
                 }
                 resolve(arr);
             });

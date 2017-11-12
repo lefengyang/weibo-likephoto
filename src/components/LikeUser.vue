@@ -49,6 +49,8 @@ export default {
             return scrollTop;
         },
         loadPage() {
+            if(this.is_loading)return;//防止加载太快被禁
+
             this.is_loading = true;
             api.LikeUser(this.mid, this.page).then(res => {
                 this.is_loading = false;

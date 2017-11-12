@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Search from '@/components/Search'
-import Login from '@/components/Login'
 import List from '@/components/List'
 import History from '@/components/History'
 import HistoryUser from '@/components/HistoryUser'
@@ -18,10 +17,6 @@ export default new Router({
     {
       path: '/list',
       component: List
-    },
-    {
-      path: '/login',
-      component: Login
     },
     {
       path: '/history',

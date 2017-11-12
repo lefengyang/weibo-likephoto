@@ -1,12 +1,15 @@
 <template>
     <div class="hello">
-        <div class="back"><a @click="routerBack">返回</a></div>
+        <div class="back"><a @click="routerBack">返回</a> <div class="blog-name">{{name}}</div></div>
         <div class="photo-list">
             <img class="small" v-lazy="item.pic_small" v-for="(item, index) in picList" @click="_big(item, index)">
             <div class="loading" v-show="is_loading">加载中...</div>
-            <div class="big-photo" v-show="is_view" @click="_hide()">
+            <div class="big-photo" v-show="is_view">
                 <img :src="big_img">
-                <div class="like-user" @click="_like_user()">此图点赞用户</div>
+                <div class="left-area" @click="prev()"></div>
+                <div class="center-area" @click="_hide()"></div>
+                <div class="right-area" @click="next()"></div>
+                <div class="like-user" @click="_like_user()" v-show="mid">此图点赞用户</div>
             </div>
         </div>
     </div>
@@ -19,6 +22,7 @@ export default {
     data() {
         return {
             uid: this.$route.query.uid,
+            name: this.$route.query.name,
             page: 1,
             picList: [],
             is_loading: false,
@@ -37,22 +41,6 @@ export default {
                 if(this.is_loading)return;
                 this.page++;
                 this.loadPage();
-            }
-        },false);
-
-        var start_x = 0;
-
-        window.addEventListener('touchstart',(e)=>{
-            start_x = e.touches[0].clientX;
-        },false);
-
-        window.addEventListener('touchend',(e)=>{
-            var clientX = e.changedTouches[0].clientX;
-            if(clientX - start_x > 50){//查看上一张
-                this.prev();
-            }
-            else if(start_x - clientX > 50){//查看下一张
-                this.next();
             }
         },false);
     },
@@ -74,14 +62,16 @@ export default {
             return scrollTop;
         },
         loadPage(){
+            if(this.is_loading)return;//防止加载太快被禁
+
+            if(this.picList.length>300){
+                this.index = 0;
+                this.picList = this.picList.slice(290);
+                window.scroll(0,0);
+            }
             this.is_loading = true;
             api.LoadPhotoPage(this.uid, this.page).then(res => {
                 this.is_loading = false;
-                if(this.picList.length>300){
-                    this.index = 0;
-                    this.picList = [];
-                    window.scroll(0,0);
-                }
                 for(var i in res.pics){
                     res.pics[i]['pic_small'] = res.pics[i]['pic_small'].replace(/(https?:\/\/.*?\/).*?(\/.*)/,'$1thumb150$2');
                 }
@@ -100,7 +90,7 @@ export default {
                 this.mid = '';
             }
 
-            api.addPhoto(url);
+            api.addPhoto(url, this.mid);
         },
         prev() {
             if(this.index<=0)return;
@@ -124,6 +114,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.left-area{position:absolute;left:0;top:0;bottom:0;right:70%;}
+.center-area{position:absolute;left:30%;top:0;bottom:0;right:30%;}
+.right-area{position:absolute;left:70%;top:0;bottom:0;right:0;}
+
 .like-user{
     position: absolute;
     right: 1rem;
@@ -134,6 +128,8 @@ export default {
     border: 1px solid #fff;
     background: #000;
 }
+
+.blog-name{float:right;}
 
 .back{
     padding:0.5rem;

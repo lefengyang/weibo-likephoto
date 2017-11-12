@@ -2,7 +2,7 @@
     <div class="hello">
         <div class="back"><a @click="routerBack">返回</a></div>
         <div class="user" v-for="(item, index) in userLists">
-            <div class="name" @click="_go(item.uid)">{{item.name}}</div>
+            <div class="name" @click="_go(item.uid, item.name)">{{item.name}}<br>{{item.last}}</div>
             <div class="close" @click="_del(item.uid)">删除</div>
         </div>
     </div>
@@ -27,8 +27,9 @@ export default {
         routerBack(){
             this.$router.back();
         },
-        _go(uid) {
-            this.$router.push({path:'/list', query:{uid:uid}})
+        _go(uid, name) {
+            api.addUser(uid, name);
+            this.$router.push({path:'/list', query:{uid:uid,name:name}})
         },
         _del(uid) {
             api.delUser(uid);

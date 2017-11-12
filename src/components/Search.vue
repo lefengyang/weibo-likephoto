@@ -9,7 +9,6 @@
     <div class="other">
         <router-link to="/history">历史相册</router-link>
         <router-link to="/history_user">历史用户</router-link>
-        <router-link to="/login">重新登录</router-link>
     </div>
 
     <h2>最新搜索</h2>
@@ -43,7 +42,7 @@ export default {
     created() {
         //从leanCloud读取
         var keyword_list = [];
-        var cql = 'select * from recent_search_keyword order by updatedAt desc limit 20';
+        var cql = 'select * from recent_search_keyword order by updatedAt desc limit 40';
         AV.Query.doCloudQuery(cql).then(data => {
             var results = data.results;
             for(var i in results){
@@ -51,25 +50,6 @@ export default {
             }
             this.keywordList = keyword_list;
         });
-
-/*
-        //jsonp的例子
-        jsonp({
-            url:'//narya.huainanhai.com/intro/list',
-            data:{onlyjson:0},
-            success:function(data){
-                console.log('jsonp1', data);
-            }
-        });
-
-        jsonp({
-            url:'//narya.huainanhai.com/elite/list',
-            data:{onlyjson:0},
-            success:function(data){
-                console.log('jsonp2', data);
-            }
-        });
-*/
     },
     methods: {
         updateKeyword(keyword) {
