@@ -5,9 +5,8 @@
             <img class="small" v-lazy="item.pic_small" v-for="(item, index) in picList" @click="_big(item, index)">
             <div class="loading" v-show="is_loading">加载中...</div>
             <div class="big-photo" v-show="is_view">
-                <img :src="big_img">
+                <img :src="big_img" @click="_hide()">
                 <div class="left-area" @click="_left()"></div>
-                <div class="center-area" @click="_hide()"></div>
                 <div class="right-area" @click="_right()"></div>
                 <div class="like-user" @click="_like_user()" v-show="mid">此图点赞用户</div>
             </div>
@@ -17,6 +16,7 @@
 
 <script>
 import api from '../api'
+var loadingimg = require('../../static/loading.gif');
 
 export default {
     data() {
@@ -89,9 +89,18 @@ export default {
         },
         _big(item, index) {
             var url = item.pic_ori;
-            this.big_img = url;
+            this.big_img = loadingimg;
             this.is_view = true;
             this.index = index;
+
+            var newImg = new Image();
+            newImg.src = url;
+            newImg.onerror = () => {
+                this.big_img = '';
+            }
+            newImg.onload = () => {
+                this.big_img = url;
+            }
 
             try{
                 this.mid = item.mblog.mid;
@@ -138,7 +147,6 @@ export default {
 
 <style lang="scss" scoped>
 .left-area{position:absolute;left:0;top:0;bottom:0;right:75%;}
-.center-area{position:absolute;left:25%;top:0;bottom:0;right:25%;}
 .right-area{position:absolute;left:75%;top:0;bottom:0;right:0;}
 
 .go-page-input{width:50px;border:1px solid #333;text-align:center;}
