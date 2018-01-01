@@ -68,7 +68,6 @@ export default {
             if(this.picList.length>300){
                 this.index = 0;
                 this.picList = this.picList.slice(290);
-                window.scroll(0,0);
             }
             this.is_loading = true;
             api.LoadPhotoPage(this.uid, this.page).then(res => {

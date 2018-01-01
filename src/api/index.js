@@ -35,8 +35,6 @@ export function fetchGet(url) {
     })
 }
 
-var gsid = '_2A253ArP0DeTxGedG7FUR8yrIzjmIHXVVkN_hrDV6PUJbkdANLUbCkWp-f5wpaeSszG3ckfmEanQfD1Lfmw..';
-
 export default {
     //搜索用户
     Search(name) {
