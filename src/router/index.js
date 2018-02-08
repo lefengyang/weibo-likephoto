@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Search from '@/components/Search'
 import List from '@/components/List'
+import Gsid from '@/components/Gsid'
 import History from '@/components/History'
 import HistoryUser from '@/components/HistoryUser'
 import LikeUser from '@/components/LikeUser'
@@ -17,6 +18,10 @@ export default new Router({
     {
       path: '/list',
       component: List
+    },
+	{
+      path: '/gsid',
+      component: Gsid
     },
     {
       path: '/history',

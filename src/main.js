@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { store } from './store/store'
+import api from './api'
 
 Vue.config.productionTip = false
 
@@ -23,5 +24,17 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  created: () => {
+    //读取gsid
+	var cql = 'select * from gsid limit 1';
+	AV.Query.doCloudQuery(cql).then(data => {
+		var results = data.results;
+		for(var i in results){
+			var gsid = results[i]['attributes']['gsidstr'];
+			console.log('gsid:',gsid);
+			api.setGsid(gsid);
+		}
+	});
+  }
 })

@@ -9,6 +9,7 @@
     <div class="other">
         <router-link to="/history">历史相册</router-link>
         <router-link to="/history_user">历史用户</router-link>
+		<router-link to="/gsid">更新gsid</router-link>
         <select v-model="hand">
             <option value="left">左手</option>
             <option value="right">右手</option>
